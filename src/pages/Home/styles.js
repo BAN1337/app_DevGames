@@ -39,7 +39,7 @@ export const SearchInput = styled.TextInput`
     background-color: #1f2430;
     color: #fff;
     padding: 10px;
-    font-size: 19px;
+    font-size: 17px;
     border-radius: 20px;
     margin-right: 15px;
 `
@@ -48,14 +48,20 @@ export const SearchButton = styled.TouchableOpacity`
     width: 15%;
 `
 
-export const ListCategorys = styled.FlatList`
-    margin: 13px;
+export const ContainerListCategorys = styled.View`
+    margin-top: 13px;
+    margin-left: 13px;
+    margin-bottom: 26px;
 `
+
+export const ListCategorys = styled.FlatList``
 
 export const Subtitle = styled.Text`
     color: #fff;
+    margin-left: 13px;
+    margin-bottom: 13px;
+    font-size: 19px;
+    font-weight: bold;
 `
 
-export const ListGames = styled.FlatList`
-
-`
+export const ListGames = styled.FlatList``

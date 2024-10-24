@@ -1,10 +1,8 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
-   
-`
-
 export const CategoryButton = styled.TouchableOpacity`
+    justify-content: center;
+    align-items: center;
     background-color: #64748b;
     margin-right: 13px;
     border-radius: 8px;
@@ -13,5 +11,5 @@ export const CategoryButton = styled.TouchableOpacity`
 export const CategoryButtonText = styled.Text`
     color: #fff;
     font-size: 17px;
-    padding: 8px;
+    padding: 7px;
 `
