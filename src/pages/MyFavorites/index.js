@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import api from "../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
     Container,
@@ -11,27 +12,35 @@ import {
 import { ActivityIndicator } from "react-native";
 import GameItem from "../../components/GameItem";
 
-export default function Search({ route }) {
+export default function MyFavorites() {
     const [loading, setLoading] = useState(true)
-    const [gamesSearch, setGamesSearch] = useState([])
+    const [gamesFavorites, setGamesFavorites] = useState([])
 
     const isFocused = useIsFocused()
 
     useEffect(() => {
-        async function loadGames() {
-            const gamesSearch = await api.get('/games', {
-                params: {
-                    page_size: 5,
-                    key: 'f3a00a4560d44cb7adb5f066d5592439',
-                    search: route.params.searchInput
-                }
+        async function loadGamesFavorites() {
+            const AsyncGamesFavorites = await AsyncStorage.getItem('@favoriteGames')
+            const arrayAsyncGamesFavorites = JSON.parse(AsyncGamesFavorites)
+            let games = []
+
+            arrayAsyncGamesFavorites.forEach(async (nameGame) => {
+                const game = await api.get(`/games/${nameGame}`, {
+                    params: {
+                        key: 'f3a00a4560d44cb7adb5f066d5592439'
+                    }
+                })
+                    .then((response) => {
+                        games.push(response)
+                    })
             })
 
-            setGamesSearch(gamesSearch.data.results)
+            console.log(games)
+            setGamesFavorites(games)
             setLoading(false)
         }
 
-        loadGames()
+        loadGamesFavorites()
     }, [isFocused])
 
     if (loading) {
@@ -44,16 +53,16 @@ export default function Search({ route }) {
 
     return (
         <Container>
-            {gamesSearch.length > 0 ? (
+            {gamesFavorites.length > 0 ? (
                 <ListGames
-                    data={gamesSearch}
+                    data={gamesFavorites}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => <GameItem data={item} />}
                     showsVerticalScrollIndicator={false}
                 />
             ) : (
                 <MessageErrorContainer>
-                    <MessageErrorText>Não encontramos um jogo com esse nome...</MessageErrorText>
+                    <MessageErrorText>Não há jogos favoritados...</MessageErrorText>
                 </MessageErrorContainer>
             )}
         </Container>

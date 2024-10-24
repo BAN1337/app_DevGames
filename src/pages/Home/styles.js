@@ -9,7 +9,7 @@ export const Header = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 13px;
+    margin: 26px 13px;
 `
 export const Title = styled.Text`
     color: #fff;
@@ -30,7 +30,8 @@ export const SearchContainer = styled.View`
     flex-direction: row;
     align-items: center;
     width: 100%;
-    margin: 13px;
+    margin-left: 13px;
+    margin-right: 13px;
 `
 
 export const SearchInput = styled.TextInput`
@@ -39,7 +40,7 @@ export const SearchInput = styled.TextInput`
     background-color: #1f2430;
     color: #fff;
     padding: 10px;
-    font-size: 17px;
+    font-size: 16.27px;
     border-radius: 20px;
     margin-right: 15px;
 `
@@ -48,8 +49,8 @@ export const SearchButton = styled.TouchableOpacity`
     width: 15%;
 `
 
-export const ContainerListCategorys = styled.View`
-    margin-top: 13px;
+export const ListCategorysContainer = styled.View`
+    margin-top: 26px;
     margin-left: 13px;
     margin-bottom: 26px;
 `
@@ -60,7 +61,7 @@ export const Subtitle = styled.Text`
     color: #fff;
     margin-left: 13px;
     margin-bottom: 13px;
-    font-size: 19px;
+    font-size: 18px;
     font-weight: bold;
 `
 

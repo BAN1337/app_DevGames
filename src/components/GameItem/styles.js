@@ -23,13 +23,13 @@ export const Overlay = styled.View`
 `
 
 export const GameInfosContainer = styled.View`
-    padding: 10px;
+    padding: 12px;
 `
 
 export const TitleGame = styled.Text`
     color: #fff;
     font-weight: bold;
-    font-size: 19px;
+    font-size: 16px;
     margin-bottom: 5px;
 `
 
@@ -40,6 +40,6 @@ export const NotaContainer = styled.View`
 
 export const NotaGame = styled.Text`
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
     margin-left: 7px;
 `

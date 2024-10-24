@@ -12,20 +12,23 @@ import {
     SearchContainer,
     SearchInput,
     SearchButton,
-    ContainerListCategorys,
+    ListCategorysContainer,
     ListCategorys,
     Subtitle,
     ListGames
 } from "./styles";
-import { Text } from "react-native";
+import { Text, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from "react-native";
 import CategoryItem from "../../components/CategoryItem";
 import GameItem from "../../components/GameItem";
 
 export default function Home() {
+    const [loading, setLoading] = useState(true)
     const [searchInput, setSearchInput] = useState('')
     const [trendingGames, setTrendingGames] = useState([])
+    const [categorys, setCategorys] = useState([])
 
     const isFocused = useIsFocused()
+    const navigation = useNavigation()
 
     useEffect(() => {
         async function loadGames() {
@@ -36,20 +39,46 @@ export default function Home() {
                 }
             })
 
+            const categorys = await api.get('/genres', {
+                params: {
+                    key: 'f3a00a4560d44cb7adb5f066d5592439'
+                }
+            })
+
+            setCategorys(categorys.data.results)
             setTrendingGames(trendingGames.data.results)
+            setLoading(false)
         }
 
         loadGames()
     }, [isFocused])
 
+    function handleSearch() {
+        if (searchInput.trim().length > 0) {
+            navigation.navigate('Search', { searchInput })
+            setSearchInput('')
+        }
+    }
+
+    if (loading) {
+        return (
+            <Container style={{ justifyContent: 'center' }}>
+                <ActivityIndicator size={50} color='#FF455F' />
+            </Container>
+        )
+    }
+
     return (
         <Container>
-            <Header>
-                <Title>Dev<Text style={{ color: '#FF455F' }}>Games</Text></Title>
-                <MyFavoritesButton>
-                    <Ionicons name="bookmark-outline" size={22} color="white" />
-                </MyFavoritesButton>
-            </Header>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <Header>
+                    <Title>Dev<Text style={{ color: '#FF455F' }}>Games</Text></Title>
+
+                    <MyFavoritesButton onPress={() => navigation.navigate('MyFavorites')}>
+                        <Ionicons name="bookmark-outline" size={22} color="white" />
+                    </MyFavoritesButton>
+                </Header>
+            </TouchableWithoutFeedback>
 
             <SearchContainer>
                 <SearchInput
@@ -59,29 +88,35 @@ export default function Home() {
                     placeholderTextColor='#fff'
                     autoCorrect={false}
                 />
-                <SearchButton>
+                <SearchButton onPress={handleSearch}>
                     <Feather name="search" size={31} color="#FF455F" />
                 </SearchButton>
             </SearchContainer>
 
-            <ContainerListCategorys>
-                <ListCategorys
-                    data={[{ id: 1, name: 'All Games' }, { id: 2, name: 'Arcade' }, { id: 3, name: 'Action' }, { id: 4, name: 'Sports' }, { id: 5, name: 'Puzzle' }]}
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <ListCategorysContainer>
+                    <ListCategorys
+                        data={categorys}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <CategoryItem data={item} />}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                    />
+                </ListCategorysContainer>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <Subtitle>Trending Games</Subtitle>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <ListGames
+                    data={trendingGames}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => <CategoryItem data={item} />}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal={true}
+                    renderItem={({ item }) => <GameItem data={item} />}
+                    showsVerticalScrollIndicator={false}
                 />
-            </ContainerListCategorys>
-
-            <Subtitle>Trending Games</Subtitle>
-
-            <ListGames
-                data={trendingGames}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => <GameItem data={item} />}
-                showsVerticalScrollIndicator={false}
-            />
+            </TouchableWithoutFeedback>
         </Container>
     )
 }
