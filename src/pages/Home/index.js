@@ -34,7 +34,7 @@ export default function Home() {
         async function loadGames() {
             const trendingGames = await api.get('/games', {
                 params: {
-                    page_size: 5,
+                    page_size: 10,
                     key: 'f3a00a4560d44cb7adb5f066d5592439'
                 }
             })

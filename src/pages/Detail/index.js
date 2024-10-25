@@ -69,7 +69,7 @@ export default function Detail({ route }) {
     return (
         <Container>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Header nameGame={route.params.data.slug} />
+                <Header dataGame={game} />
 
                 <ImagesListContainer>
                     <ImagesList

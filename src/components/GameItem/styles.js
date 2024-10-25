@@ -43,3 +43,16 @@ export const NotaGame = styled.Text`
     font-size: 14px;
     margin-left: 7px;
 `
+
+export const ButtonRemoveFavorite = styled.TouchableOpacity`
+    background-color: #E72F49;
+    width: 46px;
+    height: 46px;
+    border-radius: 23px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    z-index: 99;
+`

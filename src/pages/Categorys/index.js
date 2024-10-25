@@ -19,7 +19,7 @@ export default function Categorys({ route }) {
         async function loadGames() {
             const gamesGenres = await api.get('/games', {
                 params: {
-                    page_size: 5,
+                    page_size: 10,
                     key: 'f3a00a4560d44cb7adb5f066d5592439',
                     genres: route.params.data.id
                 }

@@ -15,33 +15,37 @@ import GameItem from "../../components/GameItem";
 export default function MyFavorites() {
     const [loading, setLoading] = useState(true)
     const [gamesFavorites, setGamesFavorites] = useState([])
-
+    const [updateScreen, setUpdateScreen] = useState(false)
     const isFocused = useIsFocused()
 
     useEffect(() => {
         async function loadGamesFavorites() {
-            const AsyncGamesFavorites = await AsyncStorage.getItem('@favoriteGames')
-            const arrayAsyncGamesFavorites = JSON.parse(AsyncGamesFavorites)
-            let games = []
+            const gamesFavorites = await AsyncStorage.getItem('@favoriteGames')
 
-            arrayAsyncGamesFavorites.forEach(async (nameGame) => {
-                const game = await api.get(`/games/${nameGame}`, {
-                    params: {
-                        key: 'f3a00a4560d44cb7adb5f066d5592439'
-                    }
-                })
-                    .then((response) => {
-                        games.push(response)
-                    })
-            })
+            if (gamesFavorites !== null) {
+                setGamesFavorites(JSON.parse(gamesFavorites))
+            }
 
-            console.log(games)
-            setGamesFavorites(games)
             setLoading(false)
         }
 
         loadGamesFavorites()
-    }, [isFocused])
+    }, [isFocused, updateScreen])
+
+    function removeFavorite(data) {
+        let games = gamesFavorites
+        let idx
+
+        games.forEach((game, index) => {
+            game.id === data.id ? idx = index : null
+        })
+
+        games.splice(idx, 1)
+
+        setGamesFavorites(games)
+        setUpdateScreen(!updateScreen)
+        AsyncStorage.setItem('@favoriteGames', JSON.stringify(games))
+    }
 
     if (loading) {
         return (
@@ -57,7 +61,7 @@ export default function MyFavorites() {
                 <ListGames
                     data={gamesFavorites}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => <GameItem data={item} />}
+                    renderItem={({ item }) => <GameItem data={item} isFavorite={true} removeFavorite={(data) => removeFavorite(data)} />}
                     showsVerticalScrollIndicator={false}
                 />
             ) : (
